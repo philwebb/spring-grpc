@@ -239,7 +239,6 @@ class GrpcServerIntegrationTests {
 	class ServerWithUnhandledException {
 
 		@Test
-		@Disabled("Need to migrate to Spring Boot 4.1.x")
 		void specificErrorResponse(@Autowired GrpcChannelFactory channels) {
 			SimpleGrpc.SimpleBlockingStub client = SimpleGrpc.newBlockingStub(channels.createChannel("0.0.0.0:0"));
 
@@ -247,7 +246,7 @@ class GrpcServerIntegrationTests {
 				.isThrownBy(() -> client.sayHello(HelloRequest.newBuilder().setName("error").build()))
 				.extracting(StatusRuntimeException::getStatus)
 				.extracting(Status::getCode)
-				.isEqualTo(Code.UNKNOWN);
+				.isEqualTo(Code.INVALID_ARGUMENT);
 		}
 
 		@Test
@@ -263,7 +262,7 @@ class GrpcServerIntegrationTests {
 	}
 
 	@Nested
-	@SpringBootTest(properties = { "spring.grpc.server.address=0.0.0.0:0" })
+	@SpringBootTest(properties = { "spring.grpc.server.port=0" })
 	class ServerWithAnyIPv4AddressAndRandomPort {
 
 		@Test
@@ -275,7 +274,7 @@ class GrpcServerIntegrationTests {
 	}
 
 	@Nested
-	@SpringBootTest(properties = { "spring.grpc.server.address=:::0" })
+	@SpringBootTest(properties = { "spring.grpc.server.address=::", "spring.grpc.server.port=0" })
 	class ServerWithAnyIPv6AddressAndRandomPort {
 
 		@Test
@@ -287,7 +286,7 @@ class GrpcServerIntegrationTests {
 	}
 
 	@Nested
-	@SpringBootTest(properties = { "spring.grpc.server.address=127.0.0.1:0" })
+	@SpringBootTest(properties = { "spring.grpc.server.address=127.0.0.1", "spring.grpc.server.port=0" })
 	class ServerWithLocalhostAndRandomPort {
 
 		@Test
@@ -299,10 +298,10 @@ class GrpcServerIntegrationTests {
 	}
 
 	@Nested
-	@SpringBootTest(properties = { "spring.grpc.server.address=0.0.0.0:0",
-			"spring.grpc.client.channel.test-channel.target=static://0.0.0.0:${local.grpc.sever.port}" })
+	@SpringBootTest(properties = { "spring.grpc.server.port=0",
+			"spring.grpc.client.channel.test-channel.target=static://0.0.0.0:${local.grpc.server.port}" })
 	@DirtiesContext
-	@Disabled("Need to migrate to Spring Boot 4.1.x")
+	// Disabled("Need to migrate to Spring Boot 4.1.x")
 	class ServerConfiguredWithStaticClientChannel {
 
 		@Test
@@ -313,7 +312,7 @@ class GrpcServerIntegrationTests {
 	}
 
 	@Nested
-	@SpringBootTest(properties = { "spring.grpc.server.address=unix:unix-test-channel" })
+	@SpringBootTest(properties = { "spring.grpc.server.netty.domain-socket-path=unix-test-channel" })
 	@EnabledOnOs(OS.LINUX)
 	class ServerWithUnixDomain {
 
@@ -326,16 +325,15 @@ class GrpcServerIntegrationTests {
 	}
 
 	@Nested
-	@SpringBootTest(properties = { "spring.grpc.server.address=0.0.0.0:0",
-			"spring.grpc.client.channel.test-channel.target=static://0.0.0.0:${local.grpc.sever.port}",
-			"spring.grpc.client.channel.test-channel.negotiation-type=TLS",
-			"spring.grpc.client.channel.test-channel.secure=false" })
+	@SpringBootTest(properties = { "spring.grpc.server.port=0",
+			"spring.grpc.client.channel.test-channel.target=static://0.0.0.0:${local.grpc.server.port}",
+			"spring.grpc.client.channel.test-channel.ssl.enabled=true",
+			"spring.grpc.client.channel.test-channel.bypass-certificate-validation=true" })
 	@ActiveProfiles("ssl")
 	@DirtiesContext
 	class ServerWithSsl {
 
 		@Test
-		@Disabled("Need to migrate to Spring Boot 4.1.x")
 		void clientChannelWithSsl(@Autowired GrpcChannelFactory channels) {
 			assertThatResponseIsServedToChannel(channels.createChannel("test-channel"));
 		}
@@ -343,15 +341,13 @@ class GrpcServerIntegrationTests {
 	}
 
 	@Nested
-	@SpringBootTest(properties = { "spring.grpc.server.address=0.0.0.0:0", "spring.grpc.server.ssl.client-auth=REQUIRE",
+	@SpringBootTest(properties = { "spring.grpc.server.port=0", "spring.grpc.server.ssl.client-auth=require",
 			"spring.grpc.server.ssl.secure=false",
-			"spring.grpc.client.channel.test-channel.target=static://0.0.0.0:${local.grpc.sever.port}",
+			"spring.grpc.client.channel.test-channel.target=static://0.0.0.0:${local.grpc.server.port}",
 			"spring.grpc.client.channel.test-channel.ssl.bundle=ssltest",
-			"spring.grpc.client.channel.test-channel.negotiation-type=TLS",
-			"spring.grpc.client.channel.test-channel.ssl.secure=false" })
+			"spring.grpc.client.channel.test-channel.bypass-certificate-validation=true" })
 	@ActiveProfiles("ssl")
 	@DirtiesContext
-	@Disabled("Need to migrate to Spring Boot 4.1.x")
 	class ServerWithClientAuth {
 
 		@Test
@@ -362,7 +358,7 @@ class GrpcServerIntegrationTests {
 	}
 
 	@Nested
-	@SpringBootTest(properties = { "spring.grpc.server.inprocess.name=foo", "spring.grpc.server.address=0.0.0.0:0" })
+	@SpringBootTest(properties = { "debug=true", "spring.grpc.server.inprocess.name=foo", "spring.grpc.server.port=0" })
 	class ServerWithRegularAndInProcessChannelsAndFactories {
 
 		@Test
@@ -371,7 +367,6 @@ class GrpcServerIntegrationTests {
 		}
 
 		@Test
-		@Disabled("Need to migrate to Spring Boot 4.1.x")
 		void servesResponseToInProcessClient(@Autowired GrpcChannelFactory channels) {
 			assertThatResponseIsServedToChannel(channels.createChannel("in-process:foo"));
 		}

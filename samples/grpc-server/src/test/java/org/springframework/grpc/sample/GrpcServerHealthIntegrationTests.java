@@ -51,12 +51,11 @@ import io.grpc.protobuf.services.HealthStatusManager;
 /**
  * Integration tests for gRPC server health feature.
  */
-@Disabled("Need to migrate to Spring Boot 4.1.x")
 class GrpcServerHealthIntegrationTests {
 
 	@Nested
-	@SpringBootTest(properties = { "spring.grpc.server.address=0.0.0.0:0",
-			"spring.grpc.client.channel.health-test.target=static://0.0.0.0:${local.grpc.sever.port}",
+	@SpringBootTest(properties = { "spring.grpc.server.port=0",
+			"spring.grpc.client.channel.health-test.target=static://0.0.0.0:${local.grpc.server.port}",
 			"spring.grpc.client.channel.health-test.health.enabled=true",
 			"spring.grpc.client.channel.health-test.health.service-name=my-service" })
 	@DirtiesContext
@@ -112,9 +111,8 @@ class GrpcServerHealthIntegrationTests {
 	}
 
 	@Nested
-	@SpringBootTest(properties = { "spring.grpc.server.health.actuator.health-indicator-paths=custom",
-			"spring.grpc.server.health.actuator.update-initial-delay=3s",
-			"spring.grpc.server.health.actuator.update-rate=3s", "management.health.defaults.enabled=true" })
+	@SpringBootTest(properties = { "spring.grpc.server.health.service.custom.include=custom",
+			"spring.grpc.server.health.schedule.delay=3s", "spring.grpc.server.health.schedule.period=3s" })
 	@AutoConfigureTestGrpcTransport
 	@DirtiesContext
 	class WithActuatorHealthAdapter {
