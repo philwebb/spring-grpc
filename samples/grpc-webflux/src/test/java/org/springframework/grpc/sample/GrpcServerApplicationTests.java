@@ -19,7 +19,6 @@ import org.springframework.test.annotation.DirtiesContext;
 		properties = { "spring.grpc.client.channel.default.target=0.0.0.0:${local.grpc.server.port}",
 				"spring.grpc.server.port=0" })
 @DirtiesContext
-// @Disabled("Need to migrate to Spring Boot 4.1.x")
 public class GrpcServerApplicationTests {
 
 	private static Log log = LogFactory.getLog(GrpcServerApplicationTests.class);

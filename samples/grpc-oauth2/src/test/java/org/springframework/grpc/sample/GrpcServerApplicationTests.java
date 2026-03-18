@@ -42,7 +42,6 @@ import io.grpc.stub.StreamObserver;
 @SpringBootTest(properties = { "spring.grpc.server.port=0",
 		"spring.grpc.client.channel.default.target=0.0.0.0:${local.grpc.server.port}" })
 @DirtiesContext
-@Disabled("Need to migrate to Spring Boot 4.1.x")
 public class GrpcServerApplicationTests {
 
 	public static void main(String[] args) {

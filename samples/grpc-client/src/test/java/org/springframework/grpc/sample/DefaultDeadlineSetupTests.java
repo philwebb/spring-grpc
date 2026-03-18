@@ -28,7 +28,6 @@ import io.grpc.Status;
 import io.grpc.StatusRuntimeException;
 
 @ImportGrpcClients
-// @Disabled("Need to migrate to Spring Boot 4.1.x")
 public class DefaultDeadlineSetupTests {
 
 	@Nested

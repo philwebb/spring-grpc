@@ -51,7 +51,6 @@ import io.grpc.protobuf.services.HealthStatusManager;
 /**
  * Integration tests for gRPC server health feature.
  */
-// @Disabled("Need to migrate to Spring Boot 4.1.x")
 class GrpcServerHealthIntegrationTests {
 
 	@Nested

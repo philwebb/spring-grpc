@@ -239,7 +239,6 @@ class GrpcServerIntegrationTests {
 	class ServerWithUnhandledException {
 
 		@Test
-		// @Disabled("Need to migrate to Spring Boot 4.1.x")
 		void specificErrorResponse(@Autowired GrpcChannelFactory channels) {
 			SimpleGrpc.SimpleBlockingStub client = SimpleGrpc.newBlockingStub(channels.createChannel("0.0.0.0:0"));
 
@@ -335,7 +334,6 @@ class GrpcServerIntegrationTests {
 	class ServerWithSsl {
 
 		@Test
-		// @Disabled("Need to migrate to Spring Boot 4.1.x")
 		void clientChannelWithSsl(@Autowired GrpcChannelFactory channels) {
 			assertThatResponseIsServedToChannel(channels.createChannel("test-channel"));
 		}
@@ -350,7 +348,6 @@ class GrpcServerIntegrationTests {
 			"spring.grpc.client.channel.test-channel.bypass-certificate-validation=true" })
 	@ActiveProfiles("ssl")
 	@DirtiesContext
-	// @Disabled("Need to migrate to Spring Boot 4.1.x")
 	class ServerWithClientAuth {
 
 		@Test
@@ -370,7 +367,6 @@ class GrpcServerIntegrationTests {
 		}
 
 		@Test
-		@Disabled("Need to migrate to Spring Boot 4.1.x")
 		void servesResponseToInProcessClient(@Autowired GrpcChannelFactory channels) {
 			assertThatResponseIsServedToChannel(channels.createChannel("in-process:foo"));
 		}

@@ -30,7 +30,6 @@ import io.grpc.StatusRuntimeException;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
 		properties = "spring.grpc.client.channel.default.target=0.0.0.0:${local.server.port}")
-// @Disabled("Need to migrate to Spring Boot 4.1.x")
 public class GrpcServerApplicationTests {
 
 	private static Log log = LogFactory.getLog(GrpcServerApplicationTests.class);

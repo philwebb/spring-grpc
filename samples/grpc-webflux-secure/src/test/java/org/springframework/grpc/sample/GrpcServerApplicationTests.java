@@ -36,7 +36,6 @@ import io.grpc.StatusRuntimeException;
 		properties = { "spring.grpc.client.channel.default.target=0.0.0.0:${local.grpc.server.port}",
 				"spring.grpc.server.port=0" })
 @DirtiesContext
-@Disabled("Need to migrate to Spring Boot 4.1.x")
 public class GrpcServerApplicationTests {
 
 	public static void main(String[] args) {
@@ -56,7 +55,6 @@ public class GrpcServerApplicationTests {
 	}
 
 	@Test
-	@Disabled("For some reason this is failing")
 	void unauthenticated() {
 		StatusRuntimeException exception = assertThrows(StatusRuntimeException.class,
 				() -> stub.sayHello(HelloRequest.newBuilder().setName("Alien").build()));
