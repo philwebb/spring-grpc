@@ -38,10 +38,10 @@ import io.grpc.reflection.v1.ServerReflectionRequest;
 import io.grpc.reflection.v1.ServerReflectionResponse;
 import io.grpc.stub.StreamObserver;
 
-@SpringBootTest(properties = {"spring.grpc.server.port=0",
+@SpringBootTest(properties = { "spring.grpc.server.port=0",
 		"spring.grpc.client.channel.default.target=0.0.0.0:${local.grpc.server.port}",
 		"spring.grpc.client.channel.stub.target=0.0.0.0:${local.grpc.server.port}",
-		"spring.grpc.client.channel.secure.target=0.0.0.0:${local.grpc.server.port}"})
+		"spring.grpc.client.channel.secure.target=0.0.0.0:${local.grpc.server.port}" })
 @DirtiesContext
 public class GrpcServerApplicationTests {
 
