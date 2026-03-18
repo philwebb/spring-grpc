@@ -358,7 +358,7 @@ class GrpcServerIntegrationTests {
 	}
 
 	@Nested
-	@SpringBootTest(properties = { "debug=true","spring.grpc.server.inprocess.name=foo", "spring.grpc.server.port=0" })
+	@SpringBootTest(properties = { "debug=true", "spring.grpc.server.inprocess.name=foo", "spring.grpc.server.port=0" })
 	class ServerWithRegularAndInProcessChannelsAndFactories {
 
 		@Test
