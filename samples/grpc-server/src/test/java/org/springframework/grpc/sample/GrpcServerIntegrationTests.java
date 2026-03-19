@@ -312,7 +312,7 @@ class GrpcServerIntegrationTests {
 	}
 
 	@Nested
-	@SpringBootTest(properties = { "spring.grpc.server.address=unix:unix-test-channel" })
+	@SpringBootTest(properties = { "spring.grpc.server.netty.domain-socket-path=unix-test-channel" })
 	@EnabledOnOs(OS.LINUX)
 	class ServerWithUnixDomain {
 
